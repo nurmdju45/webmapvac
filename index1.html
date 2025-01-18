@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vac- Nur Mohammad</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Full height for the viewport */
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(0, 255, 0, 0.4),   /* Green */
+                rgba(0, 0, 255, 0.4),   /* Blue */
+                rgba(255, 0, 255, 0.4), /* Magenta */
+                rgba(255, 255, 0, 0.4), /* Yellow */
+                rgba(0, 255, 255, 0.4)  /* Cyan */
+            );
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Sidebar styles */
+        nav {
+            background-color: rgba(0,197,205, 0.5);
+            color: #fff;
+            width: 200px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: -200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: left 0.2s ease;
+            z-index: 1000;
+        }
+
+        nav.open {
+            left: 0;
+        }
+
+        nav a {
+            background-color: rgba(0,197,205, 0.5);
+            text-decoration: none;
+            margin: 10px 0;
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: 1px solid #fff;
+            text-align: center;
+            width: 80%;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        /* Main content styles */
+        main {
+            margin-left: 0;
+            padding: 20px;
+            flex-grow: 1;
+            transition: margin-left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow-y: auto;
+            margin-top: 100px; /* Space for the header */
+            padding-bottom: 60px; /* Space for the footer */
+            height: calc(100vh - 180px); /* Subtract header and footer heights */
+            padding-top: 0; /* Remove any top padding */
+        }
+
+        main.shifted {
+            margin-left: 200px;
+        }
+
+        /* Header styles */
+        header {
+            background-color: rgba(0,197,205, 0.5); /* Semi-transparent for better visibility */
+            color: #fff;
+            display: flex;
+            justify-content: center; /* Center logo and text horizontally */
+            align-items: center; /* Center logo and text vertically */
+            width: 100%; /* Full width */
+            height: 120px; /* Full height of the top space */
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        h1 {
+            display: flex;
+            align-items: center; /* Vertically center text and logo */
+            font-size: 36px;
+            margin: 0;
+        }
+
+        .logo {
+            width: 60px; /* Adjust size as needed */
+            height: auto;
+            margin-right: 20px; /* Adds space between the logo and text */
+        }
+
+        /* Existing section styles */
+        section {
+            padding: 2em;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            margin: 20px;
+            padding: 60px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex-grow: 1; /* Allow section to take up remaining space */
+        }
+
+        /* Video container */
+        .video-container {
+            position: relative;
+            width: 1280px;
+            margin: auto;
+            height: 600px;  /* Set a fixed height for the video */
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure the video covers the entire container */
+        }
+
+        footer {
+            background-color: rgba(0,197,205, 0.5);
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1;
+        }
+
+        /* Toggle button */
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            z-index: 2000;
+        }
+
+        .toggle-btn:hover {
+            background-color: #555;
+        }
+
+        @media only screen and (max-width: 800px) {
+            nav {
+                width: 200px;
+            }
+
+            nav a {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            main.shifted {
+                margin-left: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toggle button -->
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    <!-- Sidebar navigation -->
+    <nav id="sidebar">
+        <a href="about_me.html">About Me</a>
+        <a href="nur's Map.html">Online Map</a>
+        <a href="pdfs.html">Pdf Maps</a>
+        <a href="info-vac.html">Information about Vác</a>
+        <a href="contact-us.html">Contact Us</a>
+    </nav>
+
+    <!-- Main content -->
+    <main id="content">
+        <header>
+            <h1>
+                <img src="images vac/Flag_of_Vác.svg" alt="Logo" class="logo">
+                Welcome to Vác Website
+            </h1>
+        </header>
+
+        <section id="video-section">
+            <div class="video-container">
+                <!-- Embed MP4 video -->
+                <video autoplay loop muted>
+                    <source src="images/Vac.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Nur Mohammad. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const content = document.getElementById('content');
+        const toggleButton = document.querySelector('.toggle-btn');
+
+        function toggleSidebar() {
+            const isOpen = sidebar.classList.contains('open');
+            sidebar.classList.toggle('open', !isOpen);
+            content.classList.toggle('shifted', !isOpen);
+        }
+    </script>
+</body>
+</html>

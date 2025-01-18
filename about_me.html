@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Nur Mohammad</title>
+	
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Full viewport height */
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+
+        header {
+            background-color: rgba(0, 197, 205, 0.5);
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            position: fixed;
+            z-index: 1000;
+            width: 100%; /* Ensure header spans the full width */
+            top: 0;
+        }
+
+        .main-content {
+            flex: 1; /* Take up remaining space between header and footer */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            margin: 120px auto 0 auto; /* Adjust margin for fixed header height */
+            width: 90%;
+            max-width: calc(100% - 200px); /* Ensure content width does not exceed the viewport */
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: margin-left 0.3s ease, width 0.3s ease;
+        }
+
+        .main-content.shift {
+            margin-left: 200px; /* Shift content to right when sidebar opens */
+            max-width: calc(100% - 200px); /* Keep the content within the viewport width */
+        }
+
+        footer {
+            background-color: rgba(0, 197, 205, 0.5);
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+            position: relative;
+        }
+
+        nav {
+            background-color: rgba(0, 197, 205, 0.5);
+            color: #fff;
+            width: 200px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: -200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: left 0.3s ease;
+            z-index: 999;
+        }
+
+        nav.open {
+            left: 0;
+        }
+
+        nav a {
+            background-color: rgba(0, 197, 205, 0.5);
+            text-decoration: none;
+            margin: 10px 0;
+            padding: 10px 20px;
+            border-radius: 4px;
+            border-top: 1px solid #fff;  /* Add a top border */
+            border-bottom: 1px solid #fff; /* Keep the bottom border */
+            text-align: center;
+            width: 80%;
+        }
+
+        nav a:hover {
+            background-color: #555;
+            border-color: #ddd; /* Change border color on hover */
+        }
+
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            z-index: 2000;
+        }
+
+        .toggle-btn:hover {
+            background-color: #555;
+        }
+
+        section {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 40px;
+            width: 100%; /* Use full width of main content */
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: margin-left 0.3s ease, width 0.3s ease;
+        }
+
+        .about-text {
+            flex: 1;
+            margin-left: 20px;
+            font-size: 20px; /* Increased font size */
+            color: #000; /* Black text for description */
+            line-height: 1.8;
+        }
+
+        .about-image {
+            flex: 1;
+            text-align: center;
+            margin-bottom: 40px; /* Adds space between image and footer */
+        }
+
+        .about-image img {
+            width: 350px;
+            height: 400px;
+            object-fit: cover; /* Slight zoom on the image */
+            border-radius: 8px; /* Optional rounded corners */
+        }
+
+        .about-image h2 {
+            margin-top: 10px;
+            font-size: 30px;
+            color: #000;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(0, 255, 0, 0.4),   /* Green */
+                rgba(0, 0, 255, 0.4),   /* Blue */
+                rgba(255, 0, 255, 0.4), /* Magenta */
+                rgba(255, 255, 0, 0.4), /* Yellow */
+                rgba(0, 255, 255, 0.4)  /* Cyan */
+            );
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    <nav id="sidebar">
+        <a href="index1.html">Home</a>
+        <a href="nur's Map.html">Online Map</a>
+        <a href="pdfs.html">Pdf Maps</a>
+        <a href="info-vac.html">Information about Vác</a>
+        <a href="contact-us.html">Contact Us</a>
+    </nav>
+
+    <header>
+        <h1>About Me</h1>
+    </header>
+
+    <div class="main-content">
+        <section id="about-us">
+            <div class="about-image">
+                <img src="images vac/Nur3.jpg" alt="Nur Mohammad">
+                <h2>Nur Mohammad</h2>
+            </div>
+            <div class="about-text">
+                <p>
+                    I am currently pursuing my 2nd masters in Cartography at Eötvös Loránd University, with Stipendium Hungaricum Scholarship. 
+                    <br><br>
+                    I also completed my BSc and MSc in Geography and Environment from Jahangirnagar University, Bangladesh.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Nur Mohammad. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.querySelector('.main-content');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            mainContent.classList.toggle('shift'); // Toggle content shift on sidebar open
+        }
+    </script>
+</body>
+</html>

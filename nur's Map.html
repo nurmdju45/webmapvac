@@ -1,0 +1,406 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Online Maps</title>
+		<!-- include OpenLayers -->
+        <link rel="stylesheet" href="ol.css" type="text/css">
+        <script src="ol.js" type="text/javascript"></script>
+		<!-- include feature tooltip scripts -->
+		<link rel="stylesheet" href="https://samanbey.github.io/ol-featuretooltip/ol-featuretooltip.css" type="text/css">
+		<script src="https://samanbey.github.io/ol-featuretooltip/ol-featuretooltip.js"></script>
+        <!-- include layer switcher scripts -->
+		<link rel="stylesheet" href="https://unpkg.com/ol-layerswitcher@4.1.2/dist/ol-layerswitcher.css" type="text/css">
+        <script src="https://raw.githack.com/walkermatt/ol-layerswitcher/exclusive/dist/ol-layerswitcher.js" alt="https://unpkg.com/ol-layerswitcher@4.1.2" type="text/javascript"></script>
+		
+        <style>
+		html, body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+		}
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+		/* Animated Background */
+       
+			body::before {
+				content: '';
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(45deg, 
+					rgba(0, 255, 0, 0.4),   /* Green */
+					rgba(0, 0, 255, 0.4),   /* Blue */
+					rgba(255, 0, 255, 0.4), /* Magenta */
+					rgba(255, 255, 0, 0.4), /* Yellow */
+					rgba(0, 255, 255, 0.4)  /* Cyan */
+				);
+				background-size: 400% 400%;
+				animation: gradientAnimation 10s ease infinite;
+				z-index: -1;
+			}
+
+			@keyframes gradientAnimation {
+				0% {
+					background-position: 0% 50%;
+				}
+				50% {
+					background-position: 100% 50%;
+				}
+				100% {
+					background-position: 0% 50%;
+				}
+			}
+
+        nav {
+            background-color: rgba(0, 197, 205, 0.5);
+            color: #fff;
+            width: 200px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: -200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: left 0.3s ease;
+            z-index: 999; /* Sidebar is below the toggle button */
+        }
+
+        nav.open {
+            left: 0;
+        }
+
+        nav a {
+			background-color: rgba(0, 197, 205, 0.5);
+			text-decoration: none;
+			margin: 10px 0;
+			padding: 10px 20px;
+			border-radius: 4px;
+			border-top: 1px solid #fff;  /* Add a top border */
+			border-bottom: 1px solid #fff; /* Keep the bottom border */
+			text-align: center;
+			width: 80%;
+		}
+
+		nav a:hover {
+			background-color: #555;
+			border-color: #ddd; /* Change border color on hover */
+		}
+
+        .toggle-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            z-index: 2000; /* Higher value to stay on top of sidebar */
+        }
+
+        .toggle-btn:hover {
+            background-color: #555;
+        }
+
+        header {
+            background-color: rgba(0, 197, 205, 0.5);
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            /*margin-bottom: 20px;*/
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        section {
+            padding: 2em;
+            text-align: center;
+            background-color: #fff;
+            margin: 20px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #map {
+			flex-grow: 1; /* Make the map take up the remaining space */
+			width: 100%;
+		}
+
+		footer {
+			background-color: rgba(0, 197, 205, 0.5);
+			color: white;
+			text-align: center;
+			padding: 10px;
+			height: auto;
+		}
+		
+		#main {
+			transition: margin-left 0.3s ease; /* Use margin-left instead of transform */
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+		nav.open + #main {
+			margin-left: 200px; /* Moves content to the right when sidebar is open */
+		}
+		
+		#map_div {
+			height:800px;
+			position: relative;
+		}
+		#legend {
+			position: absolute; left: 10px; bottom: 25px;
+			z-index: 10000;
+		}
+		#legend img {
+			height: 200px;
+			background: rgba(255,255,255,0.7);
+			padding: 5px;
+		}
+    </style>
+    </head>
+
+<body>
+	
+	<button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    <nav id="sidebar">
+        <a href="index1.html">Home</a>
+		<a href="about_me.html">About Me</a>
+        <a href="nur's Map.html">Online Map</a>
+        <a href="pdfs.html">Pdf Maps</a>
+        <a href="info-vac.html">Information about Vác</a>
+        <a href="contact-us.html">Contact Us</a>
+    </nav>
+	<div id="main">
+    <header>
+        <h1>ICP and IGP Maps</h1>
+
+    </header>
+
+        <div id="map_div">
+			<div id="legend">
+				<img id="poislegend" src="web_pngs/poislegend.png"/>
+				<img id="templegend" src="web_pngs/tempLegend.png"/>
+				<img id="solarlegend" src="web_pngs/solarlegend.png"/>
+				<img id="rhlegend" src="web_pngs/rhlegend.png"/>
+				<img id="noiselegend" src="web_pngs/noiselegend.png"/>
+			</div>
+		</div>
+        <script>
+			// OSM layer as base map
+            var osm=new ol.layer.Tile({
+                title: "OpenStreetMap",
+				groupName: "base",
+				source: new ol.source.OSM()
+            });
+			
+			var pomStyle=(f,r)=>new ol.style.Style({
+				image: new ol.style.Circle({
+					radius: 5,
+					stroke: new ol.style.Stroke({ color: [0, 0, 0, 0.6], width: 0.5 }),
+					fill: new ol.style.Fill({ color: [0,0,0,0] 
+
+
+					})
+				}),
+				text: new ol.style.Text({ 
+					text: f.get('name'),
+					textAlign: 'left',
+					offsetX: 13,
+					font: '12px sans-serif',
+					stroke: new ol.style.Stroke({ width: 4, color: 'white' })
+				})
+			});  
+
+			var poiStyle=(f,r)=>new ol.style.Style({
+				image: new ol.style.Circle({
+					radius: 3,
+					stroke: new ol.style.Stroke({ color: [0, 0, 0, 0], width: 1 }),
+					fill: new ol.style.Fill({ color: [0,0,0,0] 
+					})
+				}),
+				
+				text: new ol.style.Text({ 
+					text: f.get('name'),
+					textAlign: 'left',
+					offsetX: 13,
+					font: '12px sans-serif',
+					stroke: new ol.style.Stroke({ width: 4, color: 'white' })
+				})
+			});  
+			
+
+            // raster layer: layout exported from arcgis having the geographic coordinates of the extent
+			// we need the coordinates of the bottom left and the top right corner
+            //var extent = ol.proj.fromLonLat([19.10798286, 47.76412490]).concat(ol.proj.fromLonLat([19.14305944, 47.79749175]));
+			var extent=[ 2127076, 6067695, 2130980, 6073223 ]
+			    var tempLayer=new ol.layer.Image({
+                title: "Temperature",
+                groupName: 'overlays',
+				//type: "overlay",
+                extent: extent,
+                source: new ol.source.ImageStatic({
+                    url: "web_pngs/Temperature.png",
+                    imageExtent: extent
+                })
+            })
+
+            tempLayer.on('change:visible',function() {
+                document.getElementById('templegend').style.display=tempLayer.getVisible()?'':'none';
+            })
+			// import Relative Humidity Map and legend
+			//var extent = ol.proj.fromLonLat([19.10798286, 47.76412490]).concat(ol.proj.fromLonLat([19.14305944, 47.79749175]));
+            var rhLayer=new ol.layer.Image({
+                title: "Relative Humidity",
+                groupName: 'overlays',
+				//type: "overlay",
+                extent: extent,
+                source: new ol.source.ImageStatic({
+                    url: "web_pngs/Relative Humidity.png",
+                    imageExtent: extent
+                })
+            })
+
+            rhLayer.on('change:visible',function() {
+                document.getElementById('rhlegend').style.display=rhLayer.getVisible()?'':'none';
+            })
+			
+			// import Solar Radiation Map and Legend
+			//var extent = ol.proj.fromLonLat([19.10798286, 47.76412490]).concat(ol.proj.fromLonLat([19.14305944, 47.79749175]));
+            var solarLayer=new ol.layer.Image({
+                title: "Solar Radiation",
+				groupName: 'overlays',
+				//type: "overlay",
+                extent: extent,
+                source: new ol.source.ImageStatic({
+                    url: "web_pngs/Solar Radiation.png",
+                    imageExtent: extent
+                })
+            })
+			
+			solarLayer.on('change:visible',function() {
+                document.getElementById('solarlegend').style.display=solarLayer.getVisible()?'':'none';
+            })
+			
+			// import Noise map and Legend
+			
+			//var extent = ol.proj.fromLonLat([19.10798286, 47.76412490]).concat(ol.proj.fromLonLat([19.14305944, 47.79749175]));
+            var noiseLayer=new ol.layer.Image({
+                title: "Noise",
+				groupName: 'overlays',
+				//type: "overlay",
+                extent: extent,
+                source: new ol.source.ImageStatic({
+                    url: "web_pngs/Noise.png",
+                    imageExtent: extent
+                })
+            })
+			
+			noiseLayer.on('change:visible',function() {
+                document.getElementById('noiselegend').style.display=noiseLayer.getVisible()?'':'none';
+            })
+			
+            // another raster layer: layout exported from arcgis having the geographic coordinates of the extent
+			// we need the coordinates of the bottom left and the top right corner
+			var extent = ol.proj.fromLonLat([19.10798286, 47.76412490]).concat(ol.proj.fromLonLat([19.14305944, 47.79749175]));
+            var touristicLayer=new ol.layer.Image({
+                title: "Touristics Map",
+                groupName: 'overlays',
+                //type: "overlay",
+                extent: extent,
+                source: new ol.source.ImageStatic({
+                    url: "web_pngs/Touristic_Map.png",
+                    imageExtent: extent
+                })
+            })
+			
+			touristicLayer.on('change:visible',function() {
+                document.getElementById('poislegend').style.display=touristicLayer.getVisible()?'':'none';
+            })
+			// measurement points as vector layer
+			// make it sure you've exported to GeoJSON format using WGS84 coordinates
+            var pomslayer=new ol.layer.Vector({
+				title: "Measurement points",
+				visible: false,
+                source: new ol.source.Vector({
+                    format: new ol.format.GeoJSON(),
+                    url: 'data/POMs.geojson'
+                }),
+				style: pomStyle
+            });
+			
+			// make it sure you've exported to GeoJSON format using WGS84 coordinates
+            var poislayer=new ol.layer.Vector({
+				title: "Points of Interest",
+                source: new ol.source.Vector({
+                    format: new ol.format.GeoJSON(),
+                    url: 'data/POIs.geojson'
+                }),
+				style: poiStyle
+            });
+			
+			var overlays = new ol.layer.Group({
+				title: "Thematic maps",
+				layers: [ pomslayer, solarLayer, noiseLayer, rhLayer, tempLayer, touristicLayer]
+			});
+			// map object with all the layers we need
+            var map=new ol.Map({
+                target: 'map_div',
+                layers: [osm, overlays, poislayer],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([19.1, 47.5]),
+                    zoom: 10
+                })
+            });
+			
+			// add layer switcher
+			map.addControl(new ol.control.LayerSwitcher({
+				reverse: true,
+				groupSelectStyle: 'children'
+			}));			
+			
+			// fit map view to the area of interest
+			map.getView().fit(extent);
+			
+			// add feature tooltip to retrieve information of the vector points
+			var tt=new FeatureTooltip({
+				map: map,
+				//attrs: [ 'Latitude','Longitude','Temperature (°C)','Relative Humadity (%)','Noise (dB)','Solar Radiation (K/Lux)' ]
+			});
+			
+			map.addControl(new ol.control.MousePosition());
+   
+        </script>
+		
+		<script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleButton = document.querySelector('.toggle-btn');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+        }
+    </script>
+	
+	<footer>
+        <p>&copy; 2024 Nur Mohammad. All rights reserved.</p>
+    </footer>
+	</div>
+    </body>
+</html> 

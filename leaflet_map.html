@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Touristic and Environemental Map of Vác</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+		<style>
+			html, body {
+				height: 100%;
+				margin: 0;
+				display: flex;
+                flex-direction: column;
+            }
+            
+            footer {
+                background-color: #333;
+                color: white;
+                padding: 10px;
+                text-align: center;
+                font-size: 14px;
+            }
+		
+			#map_place {
+				width: 100%;
+				height: 100%;
+			}
+			#legend {
+				position: absolute; left: 10px; bottom: 25px;
+				z-index: 10000;
+			}
+			#legend img {
+				height: 200px;
+				background: rgba(255,255,255,0.85);
+				padding: 5px;
+				display: none;
+			}			
+		</style>
+
+	</head>
+	<body>
+		<h1>Touristic and Environemental Map of Vác</h1>
+		
+        	<div id="map_place">
+			<div id="legend">
+				<img id="poislegend" src="web_pngs/poislegend.png"/>
+				<img id="templegend" src="web_pngs/tempLegend.png"/>
+				<img id="solarlegend" src="web_pngs/solarlegend.png"/>
+				<img id="rhlegend" src="web_pngs/rhlegend.png"/>
+				<img id="noiselegend" src="web_pngs/noiselegend.png"/>
+			</div>
+
+		</div>
+		<script>
+			//Create map interface, set initial view
+			var map=L.map('map_place').setView([47.475,19.062], 14);
+			map.fitBounds([[47.764125,19.107982],[47.797492,19.1430594]]);
+
+			// Create an OpenstreetMap tile layer and add it to the map
+			var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			}).addTo(map);
+			// Create an OpenTopoMap tile layer and add it to the map
+			var otm = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			});
+			
+			// Add Toruistic Map and legend to the map
+			var touristicmap = L.imageOverlay("web_pngs/Touristic_Map.png", [[47.764125,19.107982],[47.797492,19.1430594]]);
+			touristicmap.on('add',function(){
+				document.getElementById('poislegend').style.display='inline';
+			}).addTo(map);;
+			touristicmap.on('remove',function(){
+				document.getElementById('poislegend').style.display='';
+			});
+			
+			
+			// Add Temperature Map and legend to the map
+			var temperaturemap = L.imageOverlay("web_pngs/Temperature.png", [[47.764125,19.107982],[47.797492,19.1430594]]);
+			temperaturemap.on('add',function(){
+				document.getElementById('templegend').style.display='inline';
+			});
+			temperaturemap.on('remove',function(){
+				document.getElementById('templegend').style.display='';
+			});
+			
+			// Add Solar Map and legend to the map			
+			var solarmap = L.imageOverlay("web_pngs/Solar Radiation.png", [[47.764125,19.107982],[47.797492,19.1430594]]);
+			solarmap.on('add',function(){
+				document.getElementById('solarlegend').style.display='inline';
+			});
+			solarmap.on('remove',function(){
+				document.getElementById('solarlegend').style.display='';
+			});
+			
+			
+			// Add Relative Humidity Map and legend to the map
+			var relativehumiditymap = L.imageOverlay("web_pngs/Relative Humidity.png", [[47.764125,19.107982],[47.797492,19.1430594]]);
+			relativehumiditymap.on('add',function(){
+				document.getElementById('rhlegend').style.display='inline';
+			});
+			relativehumiditymap.on('remove',function(){
+				document.getElementById('rhlegend').style.display='';
+			});
+			
+			
+			// Add Noise Map and legend to the map
+			var noisemap = L.imageOverlay("web_pngs/Noise.png", [[47.764125,19.107982],[47.797492,19.1430594]]);
+			noisemap.on('add',function(){
+				document.getElementById('noiselegend').style.display='inline';
+			});
+			noisemap.on('remove',function(){
+				document.getElementById('noiselegend').style.display='';
+			});
+			
+			
+			// Add geojson file to the map
+			
+			fetch ('data/POIs.geojson').then(r=>r.json()).then(d=>{
+				var pois = L.geoJSON(d,{
+					pointToLayer: (pt, ll)=>L.circleMarker(ll,{radius:3,opacity:0})
+				}).addTo(map).bindTooltip(poitooltip);
+			});
+			//var group =L.layerGroup().addTo(map);
+			
+			
+			fetch ('data/POMs.geojson').then(r=>r.json()).then(d=>{
+				var poms = L.geoJSON(d,{
+					pointToLayer: (pt, ll)=>L.circleMarker(ll,{radius:3,opacity:0})
+				}).addTo(map).bindTooltip(pomtooltip);
+			});
+			
+			//var group =L.layerGroup().addTo(map);
+			
+		// add layers control
+			L.control.layers({
+				'First Layer': osm,
+				'Second Layer': otm
+			});
+			
+			L.control.layers({
+				'Touristic': touristicmap,
+				'Temperature': temperaturemap,
+				'Solar Radiation' : solarmap,
+				'Relative Humidity' : relativehumiditymap,
+				'Noise': noisemap	
+			}).addTo(map);
+			
+				
+			function poitooltip(l) {
+				let props=l.feature.properties;
+				let text='';
+				for (let i in props)
+					text+=i+": "+props[i]+"<br/>";
+				return text;
+			}
+			
+			function pomtooltip(l) {
+				let props=l.feature.properties;
+				let text='';
+				for (let i in props)
+					text+=i+": "+props[i]+"<br/>";
+				return text;
+			}
+			
+		</script>
+		<footer>
+            &copy; 2024 Nur Mohammad | All rights reserved
+        </footer>
+	</body>
+</html>

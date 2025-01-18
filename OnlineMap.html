@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Online Maps</title>
+    <!-- include OpenLayers -->
+    <link rel="stylesheet" href="ol.css" type="text/css">
+    <script src="ol.js" type="text/javascript"></script>
+    <!-- include feature tooltip scripts -->
+    <link rel="stylesheet" href="https://samanbey.github.io/ol-featuretooltip/ol-featuretooltip.css" type="text/css">
+    <script src="https://samanbey.github.io/ol-featuretooltip/ol-featuretooltip.js"></script>
+    <!-- include layer switcher scripts -->
+    <link rel="stylesheet" href="https://unpkg.com/ol-layerswitcher@4.1.2/dist/ol-layerswitcher.css" type="text/css">
+    <script src="https://raw.githack.com/walkermatt/ol-layerswitcher/exclusive/dist/ol-layerswitcher.js" alt="https://unpkg.com/ol-layerswitcher@4.1.2" type="text/javascript"></script>
+    <link rel="stylesheet" href="OnlineMap.css">
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    <nav id="sidebar">
+        <a href="index1.html">Home</a>
+        <a href="about_me.html">About Me</a>
+        <a href="nur's Map.html">Online Map</a>
+        <a href="pdfs.html">Pdf Maps</a>
+        <a href="info-vac.html">Information about Vác</a>
+        <a href="contact-us.html">Contact Us</a>
+    </nav>
+    <div id="main">
+        <header>
+            <h1>ICP and IGP Maps</h1>
+        </header>
+
+        <div id="map_div">
+            <div id="legend">
+                <img id="poislegend" src="web_pngs/poislegend.png"/>
+                <img id="templegend" src="web_pngs/tempLegend.png"/>
+                <img id="solarlegend" src="web_pngs/solarlegend.png"/>
+                <img id="rhlegend" src="web_pngs/rhlegend.png"/>
+                <img id="noiselegend" src="web_pngs/noiselegend.png"/>
+            </div>
+        </div>
+        <script src="OnlineMap.js"></script>
+    </div>
+    <footer>
+        <p>&copy; 2024 Nur Mohammad. All rights reserved.</p>
+    </footer>
+</body>
+</html>

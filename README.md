@@ -1,10 +1,10 @@
-## Web Map for VAC
+### Web Map for VAC
 
 This repository contains a web-based map application for exploring Vác. It is developed using HTML, CSS, and JavaScript, and includes interactive features and a responsive design.
 
-Features
+## Features
 
-Index Page
+#Index Page
 
 The main landing page (index.html) introduces users to the website with the following:
 

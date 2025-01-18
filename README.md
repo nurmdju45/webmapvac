@@ -122,7 +122,7 @@ Presents historical and cultural information about Vác with a visually appealin
 ## Contact Us (contact-us.html)
 This page provides contact details and an embedded Google Map for location referencing.
 
-## Special Item: Google Maps Embed
+#### Special Item: Google Maps Embed
 ```html
 Copy
 <div class="google-map">
@@ -130,7 +130,7 @@ Copy
 </div>
 ```
 
-## Some CSS Example: Sidebar Styles
+### Some CSS Example: Sidebar Styles
 ```css
 nav {
     background-color: rgba(0, 197, 205, 0.5);
@@ -194,8 +194,8 @@ video {
 -    OpenLayers: For displaying map data and providing interactive map functionality.
 
 ## Acknowledgments
-- Special thanks to Eötvös Loránd University for supporting this project.
-- Appreciation to all contributors who have helped to enrich the Vac WebMap.
+- Special thanks to Institute of Cartography and Geoinformatics, Eötvös Loránd University for supporting this project.
+- Appreciation to who have helped to enrich the Vac WebMap.
 
 ```sql
 

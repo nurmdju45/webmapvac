@@ -45,3 +45,13 @@ var osmLayer = new ol.layer.Tile({
     source: new ol.source.OSM()
 });
 ```
+## PDF Maps (pdfs.html)
+Provides links to downloadable PDF maps of Vác, facilitating access to offline content.
+
+#### Special Item: Google Drive Links
+```html
+<p>
+    <a href="https://drive.google.com/file/d/1s1vJwBRLZO2hMcr0YoLbqWdeRXP0QNd9/view?usp=sharing" target="_blank">Touristic Map</a>
+</p>
+```
+

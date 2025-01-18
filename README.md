@@ -195,7 +195,7 @@ video {
 
 ## Acknowledgments
 - Special thanks to Institute of Cartography and Geoinformatics, Eötvös Loránd University for supporting this project.
-- Appreciation to who have helped to enrich the Vac WebMap.
+- - Special thanks to **[Mátyás Gede](https://github.com/samanbey)** for his support in helping me to enrich the Vac WebMap.
 
 ```sql
 

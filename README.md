@@ -40,7 +40,7 @@ body::before {
 This page incorporates OpenLayers to provide an interactive map displaying various thematic layers such as Temperature, Relative Humidity, and Solar Radiation.
 
 #### Special Item: OpenStreetMap Layer
-```javacript
+```javascript
 var osmLayer = new ol.layer.Tile({
     source: new ol.source.OSM()
 });

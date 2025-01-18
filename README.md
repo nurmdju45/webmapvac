@@ -201,3 +201,16 @@ video {
 
 This README now provides extensive code examples from each page, demonstrating how specific features are implemented and highlighting the project's interactivity and design choices.
 ```
+
+## Project Link
+
+View the live version of the Vác WebMap project here: [Vac WebMap Live](https://mercator.elte.hu/~d26855/web_gis/Vac/index1.html)
+
+## Contact
+
+For more information, suggestions, or contributions, please visit the project page or contact us directly:
+
+- Project Page: [Vác WebMap Project](https://mercator.elte.hu/~d26855/web_gis/Vac/index1.html)
+- Email: nurmdju45@gmail.com
+
+
